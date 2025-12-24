@@ -5,4 +5,5 @@ title: "Site Launch"
 accent: "cyan"
 ---
 
-Feliz navidad bitch
+MERRY XMAS!!!! i recently opened this website (thanks to my friend fran) so i have a cool bio now
+later i will post more updates of my life or shit like that
