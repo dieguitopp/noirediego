@@ -25,36 +25,22 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.no-scrollbar {
-  -ms-overflow-style: none;
-  /* IE and Edge */
-  scrollbar-width: none;
-  /* Firefox */
-}
-
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
 .md-content p {
   margin: 0 0 0.9rem 0;
 }
-
 .md-content a {
   text-decoration: underline;
 }
-
 .md-content ul {
   margin: 0.5rem 0 0.9rem 1.25rem;
   list-style: disc;
 }
-
 .md-content li {
   margin: 0.25rem 0;
 }
 
-
 @layer utilities {
+
   .retro-scroll::-webkit-scrollbar {
     width: 16px !important;
     height: 16px !important;
@@ -105,7 +91,14 @@ body {
 
 @layer components {
   .retro-header {
-    background: linear-gradient(90deg, #000000 0%, #000000 17%, #00137f 67%, #00137f 100%);
+    background: linear-gradient(
+      90deg,
+      #000 0%,
+      #000 18%,
+      rgba(255, 255, 255, 0.10) 60%,
+      rgba(255, 255, 255, 0.10) 100%
+    );
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   .retro-header-text {
@@ -114,4 +107,3 @@ body {
     letter-spacing: 0.02em;
   }
 }
-

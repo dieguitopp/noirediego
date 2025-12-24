@@ -1,31 +1,27 @@
 import RetroHeader from "@/components/RetroHeader";
 import Image from "next/image";
 import { getAboutSection, getMiniPosts, getSocials } from "@/lib/content";
+import StickersLayer from "@/components/StickersLayer";
 
-const SOCIAL_META: Record<
-  string,
-  { icon: string; hover: string }
-> = {
-  Discord: { icon: "/assets/socials/discord.png", hover: "hover:text-indigo-400" },
-  Steam: { icon: "/assets/socials/steam.png", hover: "hover:text-sky-400" },
-  Twitter: { icon: "/assets/socials/twitter.png", hover: "hover:text-cyan-400" },
-  Roblox: { icon: "/assets/socials/roblox.png", hover: "hover:text-red-300" },
-  NameMC: { icon: "/assets/socials/namemc.png", hover: "hover:text-emerald-300" },
+const SOCIAL_META: Record<string, { icon: string; hover: string }> = {
+  Discord: { icon: "/assets/socials/discord.png", hover: "hover:text-white" },
+  Steam: { icon: "/assets/socials/steam.png", hover: "hover:text-white" },
+  Twitter: { icon: "/assets/socials/twitter.png", hover: "hover:text-white" },
+  Roblox: { icon: "/assets/socials/roblox.png", hover: "hover:text-white" },
+  NameMC: { icon: "/assets/socials/namemc.png", hover: "hover:text-white" },
 };
 
 function accentToTitleClass(accent: string) {
   switch (accent) {
-    case "pink":
-      return "text-pink-300";
-    case "emerald":
-      return "text-emerald-300";
-    case "sky":
-      return "text-sky-300";
     case "indigo":
-      return "text-indigo-300";
+      return "text-white/85";
+    case "sky":
+    case "emerald":
+      return "text-white/90";
+    case "pink":
     case "cyan":
     default:
-      return "text-cyan-300";
+      return "text-white";
   }
 }
 
@@ -40,6 +36,16 @@ function formatDateLabel(iso: string) {
   }).format(d);
 }
 
+const CARD_CLASS =
+  "retro-scroll min-h-[220px] sm:min-h-[240px] md:min-h-0 flex-1 -mt-1 md:-mt-2 " +
+  "bg-black/55 backdrop-blur-md " +
+  "px-5 py-4 text-sm md:text-base overflow-y-auto " +
+  "border border-white/15 " +
+  "ring-1 ring-inset ring-white/10 " +
+  "shadow-[0_0_0_1px_rgba(0,0,0,0.6),0_18px_30px_rgba(0,0,0,0.55)]";
+
+const FRAME_SAFE_TOP = "pt-[100px] sm:pt-[100px] md:pt-[40px] lg:pt-[48px]";
+
 export default async function Home() {
   const [about, socials, posts] = await Promise.all([
     getAboutSection(),
@@ -51,109 +57,81 @@ export default async function Home() {
   const socialsHeader = socials.header ?? "find me here!1!";
 
   return (
-    <div className="min-h-screen relative overflow-hidden font-sans text-white selection:bg-pink-500 selection:text-white">
+    <div className="min-h-screen relative overflow-hidden font-sans text-white selection:bg-white selection:text-black">
+      {/* BG */}
       <div className="fixed inset-0 -z-10">
         <Image
-          src="/assets/bg.png"
+          src="/assets/background.png"
           fill
           alt="Background"
           className="object-cover"
           priority
           quality={100}
         />
+        <div className="absolute inset-0 bg-black/20" />
       </div>
 
-      <main className="min-h-screen flex items-center justify-center p-4 py-8 relative z-10">
-        <div className="relative w-full max-w-5xl aspect-[4/3] md:aspect-[16/10] flex items-center justify-center">
-          <div className="absolute inset-0 pointer-events-none select-none">
-            <Image
-              src="/assets/frame.png"
-              alt="Content Frame"
-              fill
-              className="object-fill"
-              priority
-            />
-          </div>
+      {/* NAME + SUBTITLE (igual que tu version) */}
+      <div className="absolute top-6 md:top-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center pointer-events-none">
+        <div className="relative w-[260px] md:w-[360px] lg:w-[420px]">
+          <Image
+            src="/assets/name.png"
+            alt="Name"
+            width={420}
+            height={120}
+            priority
+            className="w-full h-auto select-none"
+          />
+        </div>
 
-          <div className="pointer-events-none select-none">
-            {/* SONIC */}
-            <div className="absolute z-30 hidden md:block -top-10 -right-10 w-24 h-24 lg:w-32 lg:h-32">
-              <Image
-                src="/assets/sonic_decoration.gif"
-                alt="Sonic Decoration"
-                fill
-                className="object-contain"
-                unoptimized
-              />
-            </div>
+        <div className="relative w-[220px] md:w-[300px] lg:w-[340px]">
+          <Image
+            src="/assets/subtitle.png"
+            alt="Subtitle"
+            width={340}
+            height={60}
+            className="w-full h-auto opacity-90 select-none"
+          />
+        </div>
+      </div>
 
-            {/* ANGEL */}
-            <div className="absolute z-30 hidden md:block -bottom-12 -right-20 w-56 h-56 lg:w-72 lg:h-72">
-              <Image
-                src="/assets/angel_decoration.gif"
-                alt="Angel Decoration"
-                fill
-                className="object-contain"
-                unoptimized
-              />
-            </div>
+      <main className="min-h-screen flex items-center justify-center p-4 relative z-10">
+        <div
+          className="
+            relative w-full max-w-5xl
+            flex items-stretch justify-center
+            min-h-[82vh] sm:min-h-[78vh]
+            md:aspect-[16/10] md:min-h-0
+          "
+        >
+          <StickersLayer />
 
-            {/* MOBILE/TABLET */}
-            <div className="absolute z-30 md:hidden top-2 right-2 w-16 h-16">
-              <Image
-                src="/assets/sonic_decoration.gif"
-                alt="Sonic Decoration"
-                fill
-                className="object-contain"
-                unoptimized
-              />
-            </div>
-
-            <div className="absolute z-30 md:hidden bottom-2 right-2 w-40 h-40">
-              <Image
-                src="/assets/angel_decoration.gif"
-                alt="Angel Decoration"
-                fill
-                className="object-contain"
-                unoptimized
-              />
-            </div>
-          </div>
-
-          <div className="absolute left-0 -top-9 md:-top-12 z-40 w-40 h-14 md:w-56 md:h-[72px] hover:scale-105 transition-transform duration-300 pointer-events-none select-none">
-            <Image
-              src="/assets/noirediego.png"
-              alt="noirediego"
-              fill
-              className="object-contain object-left"
-              priority
-            />
-          </div>
-
-          <div className="relative w-full h-full p-10 md:p-16 lg:p-20">
-            <div className="grid h-full grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 md:grid-rows-[1fr,1fr]">
+          <div
+            className={`relative w-full h-full p-6 sm:p-8 md:p-14 lg:p-16 ${FRAME_SAFE_TOP}`}
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8 md:h-full md:grid-rows-[1fr,1fr] auto-rows-auto">
               {/* ABOUT */}
-              <section className="flex flex-col min-h-0 group">
-                <RetroHeader text={aboutHeader} size="md" />
-                <div className="retro-scroll min-h-0 flex-1 -mt-1 md:-mt-2 bg-black/40 backdrop-blur-sm px-5 py-4 text-sm md:text-base overflow-y-auto rounded-none border-2 border-black ring-1 ring-inset ring-blue-600 shadow-lg">
+              <section className="flex flex-col min-h-0 group md:h-full">
+                <RetroHeader text={aboutHeader} size="sm" />
+                <div className={CARD_CLASS}>
                   <h2 className="sr-only">About Me</h2>
                   <div
-                    className="md-content leading-relaxed"
+                    className="md-content leading-relaxed text-white/90"
                     dangerouslySetInnerHTML={{ __html: about.html }}
                   />
                 </div>
               </section>
 
               {/* SOCIALS */}
-              <section className="flex flex-col min-h-0 group">
-                <RetroHeader text={socialsHeader} size="md" />
-                <div className="retro-scroll min-h-0 flex-1 -mt-1 md:-mt-2 bg-black/40 backdrop-blur-sm px-5 py-4 text-sm md:text-base overflow-y-auto rounded-none border-2 border-black ring-1 ring-inset ring-blue-600 shadow-lg">
+              <section className="flex flex-col min-h-0 group md:h-full">
+                <RetroHeader text={socialsHeader} size="sm" />
+                <div className={CARD_CLASS}>
                   <h2 className="sr-only">Find Me</h2>
                   <ul className="space-y-3">
                     {socials.items.map((s) => {
                       const meta = SOCIAL_META[s.label] ?? {
                         icon: "/assets/socials/discord.png",
-                        hover: "hover:text-cyan-300",
+                        hover: "hover:text-white",
                       };
 
                       return (
@@ -162,9 +140,9 @@ export default async function Home() {
                             href={s.href}
                             target="_blank"
                             rel="noreferrer"
-                            className={`flex items-center gap-3 transition-colors ${meta.hover}`}
+                            className={`flex items-center gap-3 text-white/80 transition-colors ${meta.hover}`}
                           >
-                            <span className="relative w-5 h-5 shrink-0">
+                            <span className="relative w-5 h-5 shrink-0 opacity-90">
                               <Image
                                 src={meta.icon}
                                 alt={`${s.label} icon`}
@@ -173,7 +151,7 @@ export default async function Home() {
                                 sizes="20px"
                               />
                             </span>
-                            <span>{s.label}</span>
+                            <span className="tracking-wide">{s.label}</span>
                           </a>
                         </li>
                       );
@@ -183,10 +161,10 @@ export default async function Home() {
               </section>
 
               {/* MINI BLOG */}
-              <section className="md:col-span-2 min-h-0 group">
-                <div className="min-h-0 flex h-full flex-col w-[92%] md:w-[68%] lg:w-[62%]">
-                  <RetroHeader text="mini blog :3" size="md" />
-                  <div className="retro-scroll min-h-0 flex-1 -mt-1 md:-mt-2 bg-black/40 backdrop-blur-sm px-5 py-4 text-sm md:text-base overflow-y-auto rounded-none border-2 border-black ring-1 ring-inset ring-blue-600 shadow-lg">
+              <section className="md:col-span-2 min-h-0 group md:h-full">
+                <div className="min-h-0 flex flex-col w-full md:w-[70%] lg:w-[64%] mx-auto md:h-full">
+                  <RetroHeader text="mini blog :3" size="sm" />
+                  <div className={CARD_CLASS}>
                     <h2 className="sr-only">Mini Blog</h2>
 
                     <div className="space-y-6">
@@ -195,18 +173,24 @@ export default async function Home() {
                           key={`${p.date}-${p.title}`}
                           className="border-b border-white/10 pb-4 last:border-0 last:pb-0"
                         >
-                          <div className="flex items-center gap-2 text-xs text-gray-400 mb-2">
+                          <div className="flex items-center gap-2 text-xs text-white/55 mb-2">
                             <span>{formatDateLabel(p.date)}</span>
                             <span>•</span>
-                            <span>{p.type}</span>
+                            <span className="uppercase tracking-wider">
+                              {p.type}
+                            </span>
                           </div>
 
-                          <h3 className={`font-bold text-lg mb-2 ${accentToTitleClass(p.accent)}`}>
+                          <h3
+                            className={`font-bold text-lg md:text-xl mb-2 ${accentToTitleClass(
+                              p.accent
+                            )}`}
+                          >
                             {p.title}
                           </h3>
 
                           <div
-                            className="md-content text-gray-200 leading-relaxed"
+                            className="md-content text-white/85 leading-relaxed"
                             dangerouslySetInnerHTML={{ __html: p.bodyHtml }}
                           />
                         </article>
@@ -215,7 +199,6 @@ export default async function Home() {
                   </div>
                 </div>
               </section>
-
             </div>
           </div>
         </div>
